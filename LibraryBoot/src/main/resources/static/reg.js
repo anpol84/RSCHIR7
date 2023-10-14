@@ -1,5 +1,4 @@
 const form = document.querySelector('form');
-console.log("sad2");
 form.addEventListener('submit', async (event) => {
     event.preventDefault(); // отменяем стандартное поведение формы
 
@@ -23,10 +22,7 @@ form.addEventListener('submit', async (event) => {
 
 
     const data = await response.json();
-    console.log(data);
-    console.log(data.token);
-    console.log(data.role);
-    console.log(data.username);
+    
     // сохраняем данные в sessionStorage
     sessionStorage.setItem('token', data.token);
     sessionStorage.setItem('role', data.role);

@@ -21,7 +21,6 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     public AuthenticationResponse register(RegisterRequest request) {
-        
         UserImpl userImpl = UserImpl.builder().name(request.getUsername()).
                 password(passwordEncoder.encode(request.getPassword())).role(Role.USER).build();
         userRepository.save(userImpl);
@@ -29,7 +28,6 @@ public class AuthService {
         return AuthenticationResponse.builder().token(jwtToken).role(userImpl.getRole().toString()).
                 username(userImpl.getUsername()).build();
     }
-
     public AuthenticationResponse registerReader(RegisterRequest request) {
         
         UserImpl userImpl = UserImpl.builder().name(request.getUsername()).
@@ -39,9 +37,7 @@ public class AuthService {
         return AuthenticationResponse.builder().token(jwtToken).role(userImpl.getRole().toString()).
                 username(userImpl.getUsername()).build();
     }
-
     public AuthenticationResponse registerAdmin(RegisterRequest request) {
-        
         UserImpl userImpl = UserImpl.builder().name(request.getUsername()).
                 password(passwordEncoder.encode(request.getPassword())).role(Role.ADMIN).build();
         userRepository.save(userImpl);
@@ -49,20 +45,16 @@ public class AuthService {
         return AuthenticationResponse.builder().token(jwtToken).role(userImpl.getRole().toString()).
                 username(userImpl.getUsername()).build();
     }
-
     public AuthenticationResponse login(RegisterRequest request) {
-        
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
-        
         UserDto userDto = userRepository.findUserByUsername(request.getUsername());
         UserImpl user = new UserImpl(userDto.getName(), userDto.getPassword(), userDto.getRole());
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).role(user.getRole().toString()).
                 username(user.getUsername()).build();
     }
-
     public boolean checkToken(CheckRequest request){
         UserDto userDto = userRepository.findUserByUsername(request.getUsername());
         UserImpl user = new UserImpl();

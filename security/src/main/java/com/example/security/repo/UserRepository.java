@@ -17,17 +17,14 @@ public class UserRepository {
     private RedisTemplate template;
     private final static String HASH_KEY = "User";
     public UserImpl save(UserImpl userImpl){
-        
         UserDto userDto = new UserDto(userImpl.getName(), userImpl.getPassword(), userImpl.getRole());
         template.opsForHash().put(HASH_KEY, userImpl.getName(), userDto);
         findUserByUsername(userImpl.getName());
         return userImpl;
     }
-
     public List<UserImpl> findAll(){
         return template.opsForHash().values(HASH_KEY);
     }
-
     public Object findUserById(int id){
 
         return (UserImpl) template.opsForHash().get(HASH_KEY, id);
@@ -41,7 +38,6 @@ public class UserRepository {
         String role = temp[2].substring(temp[2].indexOf("=")+1, temp[2].length() -1);
         return new UserDto(name, password, role);
     }
-
     public String deleteUser(int id){
         template.opsForHash().delete(HASH_KEY, id);
         return "User removed";
