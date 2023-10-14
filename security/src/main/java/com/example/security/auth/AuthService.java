@@ -21,7 +21,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     public AuthenticationResponse register(RegisterRequest request) {
-        System.out.println(request.toString());
+        
         UserImpl userImpl = UserImpl.builder().name(request.getUsername()).
                 password(passwordEncoder.encode(request.getPassword())).role(Role.USER).build();
         userRepository.save(userImpl);
@@ -31,7 +31,7 @@ public class AuthService {
     }
 
     public AuthenticationResponse registerReader(RegisterRequest request) {
-        System.out.println(request.toString());
+        
         UserImpl userImpl = UserImpl.builder().name(request.getUsername()).
                 password(passwordEncoder.encode(request.getPassword())).role(Role.READER).build();
         userRepository.save(userImpl);
@@ -41,7 +41,7 @@ public class AuthService {
     }
 
     public AuthenticationResponse registerAdmin(RegisterRequest request) {
-        System.out.println(request.toString());
+        
         UserImpl userImpl = UserImpl.builder().name(request.getUsername()).
                 password(passwordEncoder.encode(request.getPassword())).role(Role.ADMIN).build();
         userRepository.save(userImpl);
@@ -51,13 +51,11 @@ public class AuthService {
     }
 
     public AuthenticationResponse login(RegisterRequest request) {
-        System.out.println(1);
-        System.out.println(request.getPassword());
-        System.out.println(request.getUsername());
+        
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
-        System.out.println("some");
+        
         UserDto userDto = userRepository.findUserByUsername(request.getUsername());
         UserImpl user = new UserImpl(userDto.getName(), userDto.getPassword(), userDto.getRole());
         var jwtToken = jwtService.generateToken(user);

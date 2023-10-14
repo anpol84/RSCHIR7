@@ -17,8 +17,7 @@ public class UserRepository {
     private RedisTemplate template;
     private final static String HASH_KEY = "User";
     public UserImpl save(UserImpl userImpl){
-        System.out.println(userImpl);
-        System.out.println(userImpl.getName());
+        
         UserDto userDto = new UserDto(userImpl.getName(), userImpl.getPassword(), userImpl.getRole());
         template.opsForHash().put(HASH_KEY, userImpl.getName(), userDto);
         findUserByUsername(userImpl.getName());
